@@ -8,6 +8,7 @@ import io.ktor.network.util.ioCoroutineDispatcher
 import kotlinx.coroutines.experimental.io.ByteReadChannel
 import kotlinx.coroutines.experimental.io.ByteWriteChannel
 import kotlinx.coroutines.experimental.io.readUTF8Line
+import kotlinx.coroutines.experimental.io.writeStringUtf8
 import kotlinx.coroutines.experimental.launch
 import kotlinx.coroutines.experimental.runBlocking
 import java.net.InetSocketAddress
@@ -41,8 +42,8 @@ fun main(args: Array<String>) {
             val loop = launch { MainLoop() }
             response.join()
             loop.join()
-        } catch (e: Throwable) {
-            e.printStackTrace()
+        } catch (e: Exception) {
+            println(e.message)
             socket!!.close()
         }
     }
@@ -52,19 +53,17 @@ fun main(args: Array<String>) {
 suspend fun MainLoop() {
     while (true) {
         val terminal = readLine()
-        if (terminal == "/stop") {
-            socket!!.close()
+        if (terminal != "") {
+            output!!.writeStringUtf8(terminal+"\r\n")
         } else {
             val data = mutableListOf<Int>()
             val number = Random().nextInt(5)
             for (index in 0..number) {
                 data.add(Random().nextInt(10))
             }
-            println(data)
             val numbers = gson.toJson(data)
             val cell = Cell(System.currentTimeMillis(), userID!!, userID!!, numbers, false)
-            val cellJSON = gson.toJson(cell)
-            println(cellJSON)
+            println("${cell.ID} - ${cell.line}")
             Call(cell)
         }
     }

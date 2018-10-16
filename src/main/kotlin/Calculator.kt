@@ -6,9 +6,9 @@ suspend fun Calculate(cell: Cell) {
     numbers.forEach {
         answer = answer + it
     }
+    println("Call calculated:"+answer.toString())
     cell.line = answer.toString()
     cell.lastUnit = userID!!
     cell.isReturning = true
-    delay(4000L)
     Call(cell)
 }

@@ -9,9 +9,12 @@ suspend fun Call(cell: Cell) {
 suspend fun Recive() {
     while (true) {
         val responseLine = input!!.readUTF8Line()
+        if (responseLine == null) {
+            println("Socket Closed")
+            throw Exception("Socket Closed")}
         val response = client.gson.fromJson<Cell>(responseLine, Cell::class.java)
         if (!response.isReturning) {
             Calculate(response)
-        } else println(response.line)
+        } else println("Answer ${response.ID} - ${response.line}")
     }
 }
