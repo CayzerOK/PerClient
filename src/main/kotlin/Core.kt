@@ -31,7 +31,7 @@ data class Cell(
 
 fun main(args: Array<String>) {
     runBlocking{
-        socket = aSocket(ActorSelectorManager(ioCoroutineDispatcher)).tcp().connect(InetSocketAddress("127.0.0.1", 2323))
+        socket = aSocket(ActorSelectorManager(ioCoroutineDispatcher)).tcp().connect(InetSocketAddress("192.168.0.103", 5000))
         input = socket!!.openReadChannel()
         output = socket!!.openWriteChannel(autoFlush = true)
         val JsonID = input!!.readUTF8Line()
