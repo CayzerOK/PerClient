@@ -12,7 +12,7 @@ suspend fun Recive() {
         if (responseLine == null) {
             println("Null Call") //throw Exception("Socket Closed")
         } else {
-            val response = client.gson.fromJson<Cell>(responseLine, Cell::class.java)
+            val response = gson.fromJson<Cell>(responseLine, Cell::class.java)
             if (!response.isReturning) {
                 Calculate(response)
             } else println("Answer ${response.ID} - ${response.line}")

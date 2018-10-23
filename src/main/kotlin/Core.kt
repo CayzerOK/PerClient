@@ -32,9 +32,10 @@ data class Cell(
         var isReturning: Boolean)
 
 fun main(args: Array<String>) {
+    print("Enter Server-IP: ")
     val adress = readLine()
     runBlocking{
-        socket = aSocket(ActorSelectorManager(ioCoroutineDispatcher)).tcp().connect(InetSocketAddress(adress, 8085 ))
+        socket = aSocket(ActorSelectorManager(ioCoroutineDispatcher)).tcp().connect(InetSocketAddress(adress, 8080 ))
         input = socket!!.openReadChannel()
         output = socket!!.openWriteChannel(autoFlush = true)
         val JsonID = input!!.readUTF8Line()
