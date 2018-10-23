@@ -9,10 +9,12 @@ import kotlinx.coroutines.experimental.io.ByteReadChannel
 import kotlinx.coroutines.experimental.io.ByteWriteChannel
 import kotlinx.coroutines.experimental.io.readUTF8Line
 import kotlinx.coroutines.experimental.io.writeStringUtf8
-import kotlinx.coroutines.experimental.launch
-import kotlinx.coroutines.experimental.runBlocking
+import kotlinx.coroutines.experimental.*
 import java.net.InetSocketAddress
 import java.util.*
+import java.net.InetAddress
+import java.net.URL
+
 
 var gson = Gson()
 var userID:UUID? = null
@@ -30,8 +32,9 @@ data class Cell(
         var isReturning: Boolean)
 
 fun main(args: Array<String>) {
+    val adress = readLine()
     runBlocking{
-        socket = aSocket(ActorSelectorManager(ioCoroutineDispatcher)).tcp().connect(InetSocketAddress("192.168.0.103", 5000))
+        socket = aSocket(ActorSelectorManager(ioCoroutineDispatcher)).tcp().connect(InetSocketAddress(adress, 8085 ))
         input = socket!!.openReadChannel()
         output = socket!!.openWriteChannel(autoFlush = true)
         val JsonID = input!!.readUTF8Line()
